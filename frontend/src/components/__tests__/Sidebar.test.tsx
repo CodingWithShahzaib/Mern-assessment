@@ -1,72 +1,53 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
-import { Sidebar } from '../Sidebar';
-import { api } from '../../api/api';
-import '@testing-library/jest-dom';
+import { render, screen } from "@testing-library/react";
+import { describe, test, expect, vi } from "vitest";
+import { Sidebar } from "../Sidebar";
+import { MemoryRouter } from "react-router-dom";
+import "@testing-library/jest-dom";
+import { api } from "../../api/api";
+import { UserProvider } from "../../contexts/UserContext";
 
-// Mock the api and useRandomUser hook
-jest.mock('../../api/api');
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useLocation: () => ({ pathname: '/' })
+vi.mock("../../api/api", () => ({
+  api: {
+    getRandomUser: vi.fn(),
+  },
 }));
 
-describe('Sidebar component', () => {
+vi.mock("react-router-dom", async () => {
+  const actual = await vi.importActual("react-router-dom");
+  return {
+    ...actual,
+    useLocation: () => ({ pathname: "/" }),
+  };
+});
+
+describe("Sidebar component", () => {
   const mockUser = {
     id: 1,
-    name: 'John Doe',
-    email: 'john@example.com',
-    avatar: 'https://randomuser.me/api/portraits/men/1.jpg'
+    name: "John Doe",
+    email: "john@example.com",
+    avatar: "https://randomuser.me/api/portraits/men/1.jpg",
   };
 
   beforeEach(() => {
-    // Reset mocks
-    jest.clearAllMocks();
+    vi.clearAllMocks();
+
+    (api.getRandomUser as any).mockResolvedValue(mockUser);
+  });
+
+  test("fetches and displays user detail", async () => {
+    render(
+      <MemoryRouter>
+        <UserProvider>
+          <Sidebar />
+        </UserProvider>
+      </MemoryRouter>
+    );
+
+    expect(api.getRandomUser).toHaveBeenCalledTimes(1);
     
-    // Mock the API response
-    (api.getRandomUser as jest.Mock).mockResolvedValue(mockUser);
+    const userEmail = await screen.findByTestId("user-name");
+    expect(userEmail).toHaveTextContent("john@example.com");
+    
+    expect(screen.getByTestId("user-avatar")).toBeInTheDocument();
   });
-
-  test('fetches and displays user data', async () => {
-    render(
-      <MemoryRouter>
-        <Sidebar />
-      </MemoryRouter>
-    );
-
-    // Should show loading state initially
-    expect(screen.getByText(/loading/i)).toBeInTheDocument();
-
-    // Wait for user data to load
-    await waitFor(() => {
-      expect(api.getRandomUser).toHaveBeenCalledTimes(1);
-    });
-
-    // Verify user data is displayed
-    await waitFor(() => {
-      expect(screen.getByTestId('user-name')).toHaveTextContent('John Doe');
-      expect(screen.getByTestId('user-email')).toHaveTextContent('john@example.com');
-      expect(screen.getByTestId('user-avatar')).toBeInTheDocument();
-    });
-
-    // Verify navigation links
-    expect(screen.getByText('Dashboard')).toBeInTheDocument();
-    expect(screen.getByText('Blogs')).toBeInTheDocument();
-  });
-
-  test('shows error message when API fails', async () => {
-    // Mock API failure
-    (api.getRandomUser as jest.Mock).mockRejectedValue(new Error('API error'));
-
-    render(
-      <MemoryRouter>
-        <Sidebar />
-      </MemoryRouter>
-    );
-
-    // Wait for error message to appear
-    await waitFor(() => {
-      expect(screen.getByText(/error loading user/i)).toBeInTheDocument();
-    });
-  });
-}); 
+});

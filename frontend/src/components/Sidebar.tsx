@@ -74,19 +74,19 @@ export const Sidebar = () => {
     {
       key: '6',
       icon: <PieChartOutlined style={{ fontSize: 16, color: '#bfbfbf' }} />,
-      label: <Link to="/blogs/latest">Latest</Link>,
+      label: <Link to="/blogs">Latest</Link>,
       style: { margin: 0, height: 30, lineHeight: '30px', fontSize: 13, paddingLeft: 16 }
     },
     {
       key: '7',
       icon: <BorderOutlined style={{ fontSize: 16, color: '#bfbfbf' }} />,
-      label: <Link to="/blogs/archived">Archived</Link>,
+      label: <Link to="/blogs">Archived</Link>,
       style: { margin: 0, height: 30, lineHeight: '30px', fontSize: 13, paddingLeft: 16 }
     }
   ];
 
   return (
-    <Sider width={200} style={{ 
+    <Sider width={230} style={{ 
       background: '#fff', 
       height: '100vh',
       position: 'fixed',

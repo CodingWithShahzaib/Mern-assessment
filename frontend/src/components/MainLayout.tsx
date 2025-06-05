@@ -18,7 +18,7 @@ export const MainLayout = () => {
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Sidebar />
-      <Layout style={{ marginLeft: 200, background: '#f5f7f9' }}>
+      <Layout style={{ marginLeft: 230, background: '#f5f7f9' }}>
         <Header style={{ 
           background: '#fff', 
           padding: '0 24px', 

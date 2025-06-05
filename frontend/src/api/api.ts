@@ -70,7 +70,7 @@ export const api = {
         };
 
         const response = await fetch(`${API_URL}/users/${user.id}/post/${id}`, {
-          method: "POST",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },

@@ -39,16 +39,6 @@ export const Dashboard = () => {
           </Card>
         </Col>
       </Row>
-      <Card style={{ marginTop: 24 }}>
-        <Title level={4}>Welcome to the Blog Admin Dashboard</Title>
-        <Typography.Paragraph>
-          This is a simple dashboard to manage your blog posts. You can view, edit, and delete posts from the Blogs page.
-        </Typography.Paragraph>
-        <Typography.Paragraph>
-          The user profile is randomly selected each time you refresh the page. This demonstrates the use of custom hooks
-          to fetch data from APIs.
-        </Typography.Paragraph>
-      </Card>
     </div>
   );
 }; 
