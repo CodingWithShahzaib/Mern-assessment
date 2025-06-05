@@ -1,13 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  Typography,
-  Card,
-  Alert,
-  Empty,
-  Button,
-  Spin,
-  Tabs,
-} from "antd";
+import { Typography, Card, Alert, Empty, Button, Spin, Tabs } from "antd";
 import {
   FileTextOutlined,
   FilterOutlined,
@@ -242,7 +234,6 @@ export const Blogs = () => {
     getPosts();
   }, [user]);
 
-  // Reset to page 1 when changing tabs
   useEffect(() => {
     setCurrentPage(1);
   }, [activeTab]);
@@ -268,18 +259,15 @@ export const Blogs = () => {
     );
   }
 
-  // For pagination - simple implementation
   const postsPerPage = 5;
   const totalPosts = filteredPosts.length;
 
-  // Get current page posts
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    // Scroll to top of the posts section
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -330,7 +318,7 @@ export const Blogs = () => {
             <BlogPostItem key={post.id} post={post} formatDate={formatDate} />
           ))}
         </div>
-        
+
         <SimplePagination
           currentPage={currentPage}
           totalItems={totalPosts}
