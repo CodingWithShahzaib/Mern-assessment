@@ -44,10 +44,10 @@ describe("Sidebar component", () => {
     );
 
     expect(api.getRandomUser).toHaveBeenCalledTimes(1);
-    
+
     const userEmail = await screen.findByTestId("user-name");
     expect(userEmail).toHaveTextContent("john@example.com");
-    
+
     expect(screen.getByTestId("user-avatar")).toBeInTheDocument();
   });
 });

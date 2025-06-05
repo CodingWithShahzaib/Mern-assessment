@@ -26,7 +26,6 @@ export const PostEdit = () => {
         const postData = await api.getPost(Number(id));
         setPost(postData);
         
-        // Initialize form values after fetching the post
         form.setFieldsValue({
           title: postData.title,
           body: postData.body,
